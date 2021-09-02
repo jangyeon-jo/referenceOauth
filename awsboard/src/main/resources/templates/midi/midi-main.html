@@ -1,0 +1,183 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미디 플레이어</title>
+    <link rel="apple-touch-icon" type="image/png" href="/img/midi-icon.png">
+    <link rel="shortcut icon" type="image/png" href="/img/midi-icon.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        .song-title, .head-title {
+            cursor: pointer;
+        }
+
+        #table-info {
+            margin-bottom: 150px;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+
+        #play-window {
+            position: fixed;
+            z-index: 50;
+            bottom: -2px;
+            right: 0px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9)
+        }
+
+        #audio-player {
+            margin-bottom: 15px;
+        }
+
+        #play-title {
+            overflow: hidden;
+            height: 25px;
+            animation: scroll 10s linear infinite;
+        }
+
+        .play-btn-panel {
+            margin: 0px auto;
+        }
+
+        .search-highlight {
+            background-color: #fff34d;
+            -moz-border-radius: 5px; /* FF1+ */
+            -webkit-border-radius: 5px; /* Saf3-4 */
+            border-radius: 5px; /* Opera 10.5, IE 9, Saf5, Chrome */
+            -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* FF3.5+ */
+            -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* Saf3.0+, Chrome */
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7); /* Opera 10.5+, IE 9.0 */
+        }
+
+        .midi-title {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        #div-search {
+            display: none;
+        }
+
+        /* PC */
+        @media (min-width: 1025px) {
+
+            #audio.player {
+                width: 100%
+            }
+
+        }
+
+
+        /* 모바일 */
+        @media (min-width: 320px) and (max-width: 480px) {
+
+            #audio.player {
+                min-width: 150px;
+                width: 225px;
+            }
+
+            #table-info {
+                font-size: 0.8em;
+            }
+
+            .midi-logo-pc {
+                display: none;
+            }
+
+            #search {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 1199px) {
+
+            .midi-logo-mobile {
+                display: none;
+            }
+        }
+
+        @media (max-width: 1200px) {
+
+            .midi-logo-pc {
+                display: none;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="row mt-3 mb-2">
+            <div class="col-1 midi-logo-pc mx-1 mb-1">
+                <img src="https://dummyimage.com/600x600/000/fff" th:src="@{/img/midi-icon.png}" style="height: 100%;">
+            </div>
+            <div class="col-auto px-1">
+                <h2 class="midi-title"><img src="https://dummyimage.com/600x600/000/fff" th:src="@{/img/midi-icon.png}" style="height: 60px;" class="mx-1 midi-logo-mobile">미디 플레이어 (v.0.1)</h2>
+                <a href="#" class="btn btn-info btn-sm" data-placement="bottom" id="btn-help"
+                   onclick="alert(this.getAttribute('title'));"
+                   title="제목을 클릭하면 재생됩니다. 목록의 헤더를 클릭하면 오름차순/내림차순 정렬이 전환됩니다. [검색창 표시/숨김] 버튼을 누르면 검색 기능 창이 토글됩니다.">도움말</a>
+                <a th:href="@{/midi/upload}" href="#" class="btn btn-primary btn-sm">업로드</a>
+                <a th:href="@{/midi/update}" href="#" class="btn btn-secondary btn-sm">정보 업데이트</a>
+                <a href="#" id="btn-toggle-search" class="btn btn-secondary btn-sm" data-show-msg="검색창 표시" data-hide-msg="검색창 숨김">검색창 표시</a>
+            </div>
+        </div>
+        <div id="div-search" class="form-inline form-group border rounded p-2 align-middle">
+                <label for="search" class="align-middle">검색</label>
+                <input type="text" id="search" class="form-control mx-sm-3 form-control-sm align-middle">
+                <button type="submit" id="btn-search" class="btn btn-primary btn-sm align-middle">검색</button>
+                <button type="submit" id="btn-search-reset" class="btn btn-secondary btn-sm align-middle mx-1">초기화</button>
+        </div>
+        <table class="table table-hover" id="table-info">
+            <thead>
+                <tr class="head-title">
+                    <th scope="col" style="width: 60px">ID</th>
+                    <th scope="col" >제목</th>
+                    <th scope="col" style="width: 20%" class="text-center">업로더</th>
+                </tr>
+            </thead>
+            <tbody id="table-info-tbody">
+                <tr th:if="${false}">
+                    <th scope="col">1</th>
+                    <th scope="col"><span class="th-title">목dfdfdsfadfdsf avewrtw etewtew twt  ret aewt wt weewvcewrvaewrvvewrervwevrwervewraewrvewrewvrewrervewrewvewr</span></th>
+                    <th scope="col" class="text-center">업로더</th>
+                </tr><tr th:if="${false}">
+                    <th scope="col">2</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">업로더dddefefefefefefefefefefefefefefefefefefefefefefefefefefefef</th>
+                </tr><tr th:if="${false}">
+                    <th scope="col">3333</th>
+                    <th scope="col" class=".head-title">제목</th>
+                    <th scope="col">로더</th>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="play-window" class="card border-info mb-1">
+
+
+            <div class="card-body">
+                <p class="card-title" id="play-title">[홈 화면]에 등록해서 미디플레이어를 사용해보세요.</p>
+            </div>
+            <div class="play-btn-panel">
+                <audio id="audio-player" controls preload="auto"></audio>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script src="/js/app/midi.js"> </script>
+    <script>
+        midi.playerInit()
+    </script>
+
+
+</body>
+
+</html>

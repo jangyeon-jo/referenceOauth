@@ -1,0 +1,62 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.1.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.2-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+
+	// lombok
+	annotationProcessor("org.projectlombok:lombok")
+	compileOnly("org.projectlombok:lombok")
+
+	// https://mvnrepository.com/artifact/org.assertj/assertj-core
+	testCompile group: 'org.assertj', name: 'assertj-core', version: '3.6.1'
+
+	// Spring JPA
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.h2database:h2'
+
+	// https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api
+	compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+
+	// thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// security + oauth2
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// spring-session-jdbc
+	compile 'org.springframework.session:spring-session-jdbc'
+
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
+	testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '5.3.3.RELEASE'
+
+	// https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.1'
+
+
+}
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "failed"
+		exceptionFormat "short"
+	}
+}
